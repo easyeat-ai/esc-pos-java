@@ -17,25 +17,37 @@ public class NetworkPrinter implements Printer {
    public void open(){
       try {
          Socket socket = new Socket(this.address, this.port);
-         socket.setSoTimeout(1000);
+         socket.setSoTimeout(3000);
          printer = socket.getOutputStream();
       } catch (IOException e) {
          e.printStackTrace();
       }
    }
 
-   public void write(byte[] command){
+   public void write(byte[] command) {
       try {
-         printer.write(command);
+         // Check if the printer object is properly initialized before invoking methods on it
+         if (printer != null) {
+               printer.write(command);
+         } else {
+               // System.out.println("Printer object is not properly initialized.");
+               // You might want to throw a custom exception or take other appropriate action here
+         }
       } catch (IOException e) {
-         // TODO Auto-generated catch block
+         // Handle the exception
          e.printStackTrace();
+         // You could log the exception details or show a more user-friendly error message here
       }
    }
 
    public void close(){
       try {
-         printer.close();
+         if (printer != null) {
+            printer.close();
+         } else {
+               // System.out.println("Printer object is not properly initialized.");
+               // You might want to throw a custom exception or take other appropriate action here
+         }
       } catch (IOException e) {
          e.printStackTrace();
       }
